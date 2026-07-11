@@ -1,5 +1,6 @@
 package com.example.unscramble.ui
 
+import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel
 import com.example.unscramble.data.allWords
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -42,6 +43,5 @@ class GameViewModel : ViewModel() {
     init {
         resetGame()
     }
-
 
 }
