@@ -80,11 +80,12 @@ fun GameScreen(
             style = typography.titleLarge,
         )
         GameLayout(
+            currentScrambledWord = gameUiState.currentScrambledWord,
             userGuess = gameViewModel.userGuess,
             onUserGuessChanged = { gameViewModel.updateUserGuess(it) },
-            onKeyboardDone = { },
-            currentScrambledWord = gameUiState.currentScrambledWord,
-                    modifier = Modifier
+            onKeyboardDone = { gameViewModel.checkUserGuess() },
+            isGuessWrong = gameUiState.isGuessedWordWrong,
+            modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .padding(mediumPadding)
@@ -99,7 +100,7 @@ fun GameScreen(
 
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { }
+                onClick = { gameViewModel.checkUserGuess() }
             ) {
                 Text(
                     text = stringResource(R.string.submit),
@@ -136,11 +137,13 @@ fun GameStatus(score: Int, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun GameLayout(onUserGuessChanged: (String) -> Unit,
-               onKeyboardDone: () -> Unit,
-               currentScrambledWord: String,
+fun GameLayout(currentScrambledWord: String,
+               isGuessWrong: Boolean,
                userGuess: String,
-               modifier: Modifier = Modifier) {
+               onUserGuessChanged: (String) -> Unit,
+               onKeyboardDone: () -> Unit,
+               modifier: Modifier = Modifier
+) {
     val mediumPadding = dimensionResource(R.dimen.padding_medium)
 
     Card(
@@ -188,7 +191,7 @@ fun GameLayout(onUserGuessChanged: (String) -> Unit,
                 ),
                 onValueChange = onUserGuessChanged,
                 label = { Text(stringResource(R.string.enter_your_word)) },
-                isError = false,
+                isError = isGuessWrong,
                 keyboardOptions = KeyboardOptions.Default.copy(
                     imeAction = ImeAction.Done
                 ),
