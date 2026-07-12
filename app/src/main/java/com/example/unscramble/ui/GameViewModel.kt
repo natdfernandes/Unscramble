@@ -98,5 +98,4 @@ class GameViewModel : ViewModel() {
         updateUserGuess("")
     }
 
-
 }
